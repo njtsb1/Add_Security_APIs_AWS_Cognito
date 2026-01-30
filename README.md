@@ -62,6 +62,10 @@ See [original repository](https://github.com/cassianobrexbit/dio-live-cognito).
 }
 ```
 
+---
+
+```Markdown
+
 - Send
 
 ## Amazon Cognito
