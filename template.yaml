@@ -1,0 +1,62 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Lambda JWT validation + DynamoDB example
+
+Globals:
+  Function:
+    Runtime: nodejs16.x
+    Timeout: 10
+    MemorySize: 128
+
+Resources:
+
+  ItemsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: Items
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+
+  PutItemFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: put_item_function
+      Handler: jwt_validator_lambda.handler
+      CodeUri: ./src/
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref ItemsTable
+          USER_POOL_ID: !Ref CognitoUserPoolId  # set via parameter or replace
+          APP_CLIENT_ID: !Ref CognitoAppClientId
+          REGION: !Ref AWS::Region
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:PutItem
+              Resource: !GetAtt ItemsTable.Arn
+      Events:
+        ApiPost:
+          Type: Api
+          Properties:
+            Path: /items
+            Method: post
+
+Parameters:
+  CognitoUserPoolId:
+    Type: String
+    Description: Cognito User Pool Id (e.g.: sa-east-1_xxxxx)
+  CognitoAppClientId:
+    Type: String
+    Description: Cognito App Client ID (audience)
+
+Outputs:
+  ApiUrl:
+    Description: "API Gateway endpoint"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/items"

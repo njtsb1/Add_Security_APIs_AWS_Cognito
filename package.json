@@ -1,0 +1,43 @@
+{
+  "name": "dio-live-api",
+  "version": "1.0.0",
+  "description": "API example: Cognito authorizer, Lambda JWT validation and DynamoDB integration",
+  "main": "src/put_item_function.js",
+  "engines": {
+    "node": ">=16"
+  },
+  "scripts": {
+    "test": "jest --runInBand --coverage",
+    "test:watch": "jest --watch",
+    "lint": "eslint \"src/**/*.js\" \"tests/**/*.js\" || true",
+    "start:local": "sam local start-api --template template.yaml",
+    "clean": "rimraf .aws-sam node_modules coverage"
+  },
+  "keywords": [
+    "aws",
+    "lambda",
+    "cognito",
+    "dynamodb",
+    "jwt",
+    "jwks"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "jsonwebtoken": "^9.0.0",
+    "jwks-rsa": "^2.0.0"
+  },
+  "devDependencies": {
+    "jest": "^29.0.0",
+    "eslint": "^8.0.0",
+    "rimraf": "^5.0.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "src/**/*.js"
+    ],
+    "coverageDirectory": "coverage"
+  }
+}
+

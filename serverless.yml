@@ -1,0 +1,48 @@
+service: dio-live-api
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  region: sa-east-1
+  environment:
+    TABLE_NAME: ${self:custom.tableName}
+    USER_POOL_ID: ${self:custom.userPoolId}
+    APP_CLIENT_ID: ${self:custom.appClientId}
+
+functions:
+  putItem:
+    handler: jwt_validator_lambda.handler
+    events:
+      - http:
+          path: items
+          method: post
+          cors: true
+
+  # IAM role statements with least privilege
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:PutItem
+      Resource:
+        - arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.tableName}
+
+resources:
+  Resources:
+    ItemsDynamoTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.tableName}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+
+custom:
+  tableName: Items
+  userPoolId: sa-east-1_XXXXXXXXX   # replace
+  appClientId: xxxxxxxxxxxxxxxxxxxx # replace
