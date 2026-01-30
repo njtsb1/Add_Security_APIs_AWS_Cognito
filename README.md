@@ -55,14 +55,15 @@ See [original repository](https://github.com/cassianobrexbit/dio-live-cognito).
 
 - Add Request -> Method POST -> Copy the endpoint generated in API Gateway  
 - Body -> Raw -> JSON -> Add the following body  
+
+---
+
 ```json
 {
   "id": "003",
   "price": 600
 }
 ```
-
----
 
 ```Markdown
 
