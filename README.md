@@ -89,14 +89,14 @@ See [original repository](https://github.com/cassianobrexbit/dio-live-cognito).
 
 - Domain name -> Domain prefix [diolive] -> Save
 
-Creating an Amazon Cognito authorizer for a REST API in Amazon API Gateway
+## Creating an Amazon Cognito authorizer for a REST API in Amazon API Gateway
 
 - API Gateway Dashboard -> Select the created API -> Authorizers -> Create New Authorizer
 - Name [CognitoAuth] -> Type - Cognito -> Cognito User Pool [the pool created earlier] -> Token Source [Authorization]
 
 - Resources -> select the created resource -> select the created method -> Method Request -> Authorization - select the authorizer created
 
-Postman
+## Postman
 
 - Add request -> Authorization
 - Type - OAuth 2.0
